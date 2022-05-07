@@ -8,7 +8,7 @@ Essential functionality:
 - Display info about artist, album, country of origin, label and personal rating.
 - Search function.
 - Wishlist.
-- 
+
 Optional functionality:
 - GUI.
 - Track stock on top record stores
