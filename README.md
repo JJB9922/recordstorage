@@ -4,7 +4,8 @@ C++ program for storing my record collection
 New to C++. Using this as a simple beginner project to get feet wet.
 
 Essential functionality:
-- Add, remove and edit records.
+- Main menu.
+- Add, view, remove and edit records.
 - Display info about artist, album, country of origin, label and personal rating.
 - Search function.
 - Wishlist.
@@ -16,3 +17,10 @@ Optional functionality:
 
 Extremely optional functionality:
 - Show suggestions for new records based on collection.
+
+FUNCTIONALITY ADDED:
+- Main menu.
+- Add records.
+- View records.
+
+BUGS:

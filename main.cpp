@@ -1,66 +1,109 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <ios>
+#include <limits>
 
 using namespace std;
 
 class records{
     public:
-        string artist;
-        string album;
+        string artist, album;
 
     void addRecord(){
         cout << "Input Artist: \n";
-        cin >> artist;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        getline(cin, artist);
         cout << "Input Album: \n";
-        cin >> album;
+        getline(cin, album);
+    }    
+    void rmRecord(){
+        int removeID;
+        cout << "Type ID of record to remove: ";
+        cin >> removeID;
+        cout << "\nRecord removed.\n";
     }    
 };
 
 int main(){
 
     int menuOption;
-    int id;
-
     records record;
-    fstream recordList("RecordList.txt", ios::in | ios::out | ios::app);
+    
 
-    while(menuOption != 3){
+    while(menuOption != 4){
 
+    
     cout << "\nMAIN MENU\n";
     cout << "1. ADD RECORD\n";
     cout << "2. VIEW ALL RECORDS\n";
-    cout << "3. EXIT\n";
+    cout << "3. REMOVE RECORD\n";
+    cout << "4. EXIT\n";
     cout << "\nSelection: ";
     cin >> menuOption;
     cout << endl;
+    
+    
+    fstream recordList("RecordList.txt", ios::in | ios::out | ios::app);
+    int id = 0; 
+    if(recordList.is_open()){
+                 
+                string idCheck;
 
-//Next task: incrementing ID
+                while (!recordList.eof()){
+                    getline(recordList, idCheck);
+                    id++;
+                } recordList.close();
+            } else cout << "File cannot be opened.\n";
+
         switch(menuOption){
-            case 1:   
-                record.addRecord();
-                         
-                if(recordList.is_open()){
+            
+            case 1: 
+
+                          
+                if(!recordList.is_open()){
+                    fstream recordList("RecordList.txt", ios::in | ios::out | ios::app);
+                    record.addRecord();
                     cout << "\nRecord added successfully.\n";
-                    recordList << "{" << id << "," << record.artist << "," << record.album << "}" << endl;
+                    recordList << id << "|" << record.artist << "|" << record.album << endl;
+                    recordList.close();
+                } else cout << "File is not on the given path\n";
             break;
 
-            case 2:
-                recordList.seekg(0);
-                    string line;
-                    while (recordList.good()){
-                        getline(recordList, line);
-                        cout << line << endl;
-                    }
-
-                    } else cout << "File is not there on the given path\n";
+            case 2: 
+            
+            if(!recordList.is_open()){
+                fstream recordList("RecordList.txt", ios::in | ios::out | ios::app);
+                string line;
+                recordList.seekg(0, ios::beg);
+                while (!recordList.eof()){
+                    getline(recordList, line);
+                    cout << line << endl;
+                }
+                recordList.close();
+                } else cout << "File cannot be opened.\n";    
+                
             break;
+
+            case 3:
+            record.rmRecord();
+            if(recordList.is_open()){
+
+            }
+            
+            break;
+
+            case 4:
+            cout << "Exiting...\n";
+            break;
+
             default:
-            if(menuOption=3){
-                cout << "Exiting...";
-            }else cout << "\nPlease pick a valid option";
-            break;   
-        }
+            cout << "Please pick a valid option\n";
+            cin.clear();
+            cin.ignore();
+            break;
+            } 
+
     }
 
 }
