@@ -8,7 +8,7 @@ using namespace std;
 
 class records{
     public:
-        string artist, album;
+        string artist, album, removeID;
 
     void addRecord(){
         cout << "Input Artist: \n";
@@ -18,10 +18,10 @@ class records{
         getline(cin, album);
     }    
     void rmRecord(){
-        int removeID;
         cout << "Type ID of record to remove: ";
-        cin >> removeID;
-        cout << "\nRecord removed.\n";
+        cin.ignore(100, '\n');
+        getline(cin, removeID);
+
     }    
 };
 
@@ -42,7 +42,7 @@ int main(){
     cout << "\nSelection: ";
     cin >> menuOption;
     cout << endl;
-    
+
     
     fstream recordList("RecordList.txt", ios::in | ios::out | ios::app);
     int id = 0; 
@@ -52,7 +52,7 @@ int main(){
 
                 while (!recordList.eof()){
                     getline(recordList, idCheck);
-                    id++;
+                    id = ((rand() %10000000) + 999);
                 } recordList.close();
             } else cout << "File cannot be opened.\n";
 
@@ -67,7 +67,7 @@ int main(){
                     cout << "\nRecord added successfully.\n";
                     recordList << id << "|" << record.artist << "|" << record.album << endl;
                     recordList.close();
-                } else cout << "File is not on the given path\n";
+                } else cout << "File cannot be opened.\n";
             break;
 
             case 2: 
@@ -86,11 +86,21 @@ int main(){
             break;
 
             case 3:
-            record.rmRecord();
-            if(recordList.is_open()){
-
-            }
             
+            //removeID 
+            if(!recordList.is_open()){
+                    string line;
+                    fstream recordList("RecordList.txt", ios::in | ios::out | ios::app);
+                    record.rmRecord();
+                    string search = record.removeID;
+                    for(int lineCheck = 0; getline(recordList, line); lineCheck++){
+                        if(line.find(search) != string::npos){
+                            
+                            }  
+                        }
+                        cout << "Removed record: (" << line << " | "<< search << ").";
+                recordList.close();
+                } else cout << "File cannot be opened.\n";
             break;
 
             case 4:
